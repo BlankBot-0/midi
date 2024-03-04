@@ -70,12 +70,11 @@ func ControlChange(channel, controller, newVal int) *Event {
 
 // ProgramChange sets a new value the same way as ControlChange
 // but implements Mode control and special message by using reserved controller numbers 120-127.
-func ProgramChange(channel, controller, newVal int) *Event {
+func ProgramChange(channel, newProg int) *Event {
 	return &Event{
 		MsgChan:    uint8(channel),
 		MsgType:    uint8(EventByteMap["ProgramChange"]),
-		Controller: uint8(controller),
-		NewValue:   uint8(newVal),
+		NewProgram: uint8(newProg),
 	}
 }
 
@@ -334,7 +333,6 @@ func (e *Event) Encode() []byte {
 		*/
 	case 0xC:
 		binary.Write(buff, binary.BigEndian, e.NewProgram)
-		binary.Write(buff, binary.BigEndian, e.NewValue)
 		// Channel Pressure (Aftertouch)
 		// This message is most often sent by pressing down on the key after it "bottoms out".
 		// This message is different from polyphonic after-touch.
