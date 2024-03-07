@@ -14,9 +14,7 @@ const (
 )
 
 type Encoder struct {
-	// we need a write seeker because we will update the size at the end
-	// and need to back to the beginning of the file.
-	w io.WriteSeeker
+	w io.Writer
 
 	/*
 	   Format describes the tracks format
@@ -54,7 +52,7 @@ type Encoder struct {
 	size int
 }
 
-func NewEncoder(w io.WriteSeeker, format uint16, ppqn uint16) *Encoder {
+func NewEncoder(w io.Writer, format uint16, ppqn uint16) *Encoder {
 	return &Encoder{w: w, Format: format, TicksPerQuarterNote: ppqn}
 }
 
